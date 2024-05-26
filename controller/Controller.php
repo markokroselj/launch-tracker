@@ -180,4 +180,257 @@ class Controller
         ViewHelper::render("view/dashboard.php", ["authenticated" => true, "username" => $username]);
 
     }
+
+
+    public static function addOrbit(){
+        if(!self::isUserAuthenticated()){
+            ViewHelper::redirect(BASE_URL."login?after-login=add/orbit");
+            exit();
+        }
+        
+        if($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $rules = [
+                "id" => [
+                    // Only letters, numbers, and dashes are allowed
+                    "filter" => FILTER_VALIDATE_REGEXP,
+                    "options" => ["regexp" => '/^[a-zA-Z0-9\-]{1,10}$/']
+                ],
+                "orbit" => FILTER_SANITIZE_SPECIAL_CHARS
+            ];
+        
+        
+            $data = filter_input_array(INPUT_POST, $rules);
+        
+        
+            $errors = [
+                "id" => $data["id"] === false ? "invalid orbit id" : "",
+                "orbit" => $data["orbit"] === false ? "invalid orbit" : "",
+                "empty_fields" => ""
+            ];
+        
+        
+            // Check if any required fields are empty
+            if (empty($_POST["id"]) || empty($_POST["orbit"])) {
+                $errors["empty_fields"] = "empty-fields";
+            }
+            
+            $isDataValid = true;
+            foreach ($errors as $error) {
+                $isDataValid = $isDataValid && empty($error);
+            }
+            
+            if($isDataValid){
+                require_once "model/Orbit.php";
+
+                if(Orbit::addOrbit($data["id"], $data["orbit"])){
+                    echo '<div class="my-2 py-4 text-green-500">Orbit '. htmlspecialchars($data["id"]) .' - '. htmlspecialchars($data["orbit"]).' added ✔</div>';
+                    exit();
+                }else{
+                    echo '<div class="my-2 py-4 text-red-500">Error has occurred while trying to insert data into database!</div>';
+                    exit();
+                }
+            }else{
+                foreach ($errors as $error) {
+                    if ($error) {
+                        echo '<div class="py-2 text-red-500">' . htmlspecialchars($error) . '</div>';
+                    }
+                }
+                exit();
+            }
+         
+            exit();
+        } 
+
+        $username = self::isUserAuthenticated()->username;
+        ViewHelper::render("view/addOrbit.php", ["authenticated" => true, "username" => $username]);
+
+    }
+
+    public static function addLsp(){
+        if(!self::isUserAuthenticated()){
+            ViewHelper::redirect(BASE_URL."login?after-login=add/lsp");
+            exit();
+        }
+        
+        if($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $rules = [
+                "name" => FILTER_SANITIZE_SPECIAL_CHARS,
+                "country" => FILTER_SANITIZE_SPECIAL_CHARS
+            ];
+        
+        
+            $data = filter_input_array(INPUT_POST, $rules);
+        
+        
+            $errors = [
+                "name" => $data["name"] === false ? "invalid name" : "",
+                "country" => $data["country"] === false ? "invalid country" : "",
+                "empty_fields" => ""
+            ];
+        
+        
+            // Check if any required fields are empty
+            if (empty($_POST["name"]) || empty($_POST["country"])) {
+                $errors["empty_fields"] = "empty-fields";
+            }
+            
+            $isDataValid = true;
+            foreach ($errors as $error) {
+                $isDataValid = $isDataValid && empty($error);
+            }
+            
+            if($isDataValid){
+                require_once "model/Lsp.php";
+
+                if(Lsp::addLsp($data["name"], $data["country"])){
+                    echo '<div class="my-2 py-4 text-green-500">Added ✔</div>';
+                    exit();
+                }else{
+                    echo '<div class="my-2 py-4 text-red-500">Error has occurred while trying to insert data into database!</div>';
+                    exit();
+                }
+            }else{
+                foreach ($errors as $error) {
+                    if ($error) {
+                        echo '<div class="py-2 text-red-500">' . htmlspecialchars($error) . '</div>';
+                    }
+                }
+                exit();
+            }
+         
+            exit();
+        } 
+
+        $username = self::isUserAuthenticated()->username;
+        ViewHelper::render("view/addLsp.php", ["authenticated" => true, "username" => $username]);
+
+    }
+
+    public static function addLc(){
+        if(!self::isUserAuthenticated()){
+            ViewHelper::redirect(BASE_URL."login?after-login=add/lc");
+            exit();
+        }
+        
+        if($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $rules = [
+                "name" => FILTER_SANITIZE_SPECIAL_CHARS,
+                "location" => FILTER_SANITIZE_SPECIAL_CHARS
+            ];
+        
+        
+            $data = filter_input_array(INPUT_POST, $rules);
+        
+        
+            $errors = [
+                "name" => $data["name"] === false ? "invalid name" : "",
+                "location" => $data["location"] === false ? "invalid location" : "",
+                "empty_fields" => ""
+            ];
+        
+        
+            // Check if any required fields are empty
+            if (empty($_POST["name"]) || empty($_POST["location"])) {
+                $errors["empty_fields"] = "empty-fields";
+            }
+            
+            $isDataValid = true;
+            foreach ($errors as $error) {
+                $isDataValid = $isDataValid && empty($error);
+            }
+            
+            if($isDataValid){
+                require_once "model/Lc.php";
+
+                if(Lc::addLc($data["name"], $data["location"])){
+                    echo '<div class="my-2 py-4 text-green-500">Added ✔</div>';
+                    exit();
+                }else{
+                    echo '<div class="my-2 py-4 text-red-500">Error has occurred while trying to insert data into database!</div>';
+                    exit();
+                }
+            }else{
+                foreach ($errors as $error) {
+                    if ($error) {
+                        echo '<div class="py-2 text-red-500">' . htmlspecialchars($error) . '</div>';
+                    }
+                }
+                exit();
+            }
+         
+            exit();
+        } 
+
+        $username = self::isUserAuthenticated()->username;
+        ViewHelper::render("view/addLc.php", ["authenticated" => true, "username" => $username]);
+
+    }
+
+
+
+    public static function addRocket(){
+        if(!self::isUserAuthenticated()){
+            ViewHelper::redirect(BASE_URL."login?after-login=add/rocket");
+            exit();
+        }
+        
+        if($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $rules = [
+                "lsp" => FILTER_SANITIZE_SPECIAL_CHARS,
+                "name" => FILTER_SANITIZE_SPECIAL_CHARS,
+                "name" => FILTER_SANITIZE_SPECIAL_CHARS,
+                "length" => FILTER_VALIDATE_INT,
+                "reusable" => FILTER_VALIDATE_BOOL
+            ];
+        
+        
+            $data = filter_input_array(INPUT_POST, $rules);
+        
+        
+            $errors = [
+                "name" => $data["name"] === false ? "invalid name" : "",
+                "location" => $data["location"] === false ? "invalid location" : "",
+                "empty_fields" => ""
+            ];
+        
+        
+            // Check if any required fields are empty
+            if (empty($_POST["name"]) || empty($_POST["location"])) {
+                $errors["empty_fields"] = "empty-fields";
+            }
+            
+            $isDataValid = true;
+            foreach ($errors as $error) {
+                $isDataValid = $isDataValid && empty($error);
+            }
+            
+            if($isDataValid){
+                require_once "model/rocket.php";
+
+                if(Lc::addLc($data["name"], $data["location"])){
+                    echo '<div class="my-2 py-4 text-green-500">Added ✔</div>';
+                    exit();
+                }else{
+                    echo '<div class="my-2 py-4 text-red-500">Error has occurred while trying to insert data into database!</div>';
+                    exit();
+                }
+            }else{
+                foreach ($errors as $error) {
+                    if ($error) {
+                        echo '<div class="py-2 text-red-500">' . htmlspecialchars($error) . '</div>';
+                    }
+                }
+                exit();
+            }
+         
+            exit();
+        } 
+
+
+        require_once "model/Lsp.php";
+
+        $username = self::isUserAuthenticated()->username;
+        ViewHelper::render("view/addRocket.php", ["authenticated" => true, "username" => $username, "lsps" => Lsp::getAll()]);
+
+    }
 }

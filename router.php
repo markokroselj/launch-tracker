@@ -39,5 +39,40 @@ $urls = [
 
     "dashboard" => function (){
       Controller::dashboard();
+    },
+
+    "add/orbit" => function (){
+        Controller::addOrbit();
+    },
+
+    "api/add-orbit" => function (){
+        Controller::addOrbit();
+    },
+
+    "add/lsp" => function (){
+        Controller::addLsp();
+    },
+
+    "api/add-lsp" => function (){
+        Controller::addLsp();
+    },
+
+    
+    "add/lc" => function (){
+        Controller::addLc();
+    },
+
+    "api/add-lc" => function (){
+        Controller::addLc();
+    },
+
+    "add/rocket" => function (){
+        Controller::addRocket();
+    },
+
+    "api/add-rocket" => function (){
+        Controller::addRocket();
     }
+
+   
 ]; 
